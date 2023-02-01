@@ -10,7 +10,7 @@ const getAllProductsStatic = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   console.log(req.query);
-  const { name, company, featured, sort, field } = req.query;
+  const { name, company, featured, sort, field, numericFilters } = req.query;
 
   const queryObject = {};
 
@@ -33,6 +33,16 @@ const getAllProducts = async (req, res) => {
     results = results.select(fieldList);
   }
 
+  if (numericFilters) {
+    const operatorMap = {
+      ">": "$gt",
+      ">=": "$gte",
+      "=": "$eq",
+      "<": "$lt",
+      "<=": "$lte",
+    };
+    const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+  }
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 5;
   const skip = (page - 1) * limit;
