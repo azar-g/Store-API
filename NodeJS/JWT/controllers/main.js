@@ -17,7 +17,7 @@ const login = (req, res, next) => {
 const dashboard = (req, res, next) => {
   const luckyNumber = Math.floor(Math.random() * 100);
   res.status(200).json({
-    msg: "Hello",
+    msg: `Hello ${req.user.username}`,
     secret: `Here is your authorised data, your lucky numbere is ${luckyNumber} `,
   });
 };
