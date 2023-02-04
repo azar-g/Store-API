@@ -1,11 +1,11 @@
-const CustomAPIError = require("../errors/custom-error");
+const { UnAuthenticatedError } = require("../errors");
 const jwt = require("jsonwebtoken");
 
 const authMiddleWare = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new CustomAPIError("No token provided", 401);
+    throw new UnAuthenticatedError("No token provided");
   }
   const token = authHeader.split(" ")[1];
 
@@ -13,7 +13,7 @@ const authMiddleWare = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = { username: decoded.username };
   } catch (error) {
-    throw new CustomAPIError("Token doesn't exist", 401);
+    throw new UnAuthenticatedError("Token doesn't exist");
   }
   next();
 };
